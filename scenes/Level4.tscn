@@ -1,0 +1,258 @@
+[gd_scene load_steps=22 format=3 uid="uid://level4_platforms"]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/SimplePickup.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/SimpleDoor.gd" id="3"]
+[ext_resource type="Script" path="res://scripts/HintSign.gd" id="4"]
+[ext_resource type="Script" path="res://scripts/MovingPlatform.gd" id="5"]
+[ext_resource type="PackedScene" uid="uid://brhu4w2vkcqej" path="res://ui/HUD.tscn" id="6"]
+
+[sub_resource type="CapsuleShape3D" id="1"]
+radius = 0.5
+height = 2.0
+
+[sub_resource type="BoxShape3D" id="2"]
+size = Vector3(0.8, 0.8, 0.8)
+
+[sub_resource type="BoxShape3D" id="platform_shape"]
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="Environment" id="3"]
+background_mode = 1
+background_color = Color(0.15, 0.1, 0.2, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.5, 0.7, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_floor"]
+albedo_color = Color(0.25, 0.2, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="mat_wall"]
+albedo_color = Color(0.4, 0.35, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="mesh_platform"]
+size = Vector3(3, 0.5, 3)
+
+[sub_resource type="StandardMaterial3D" id="mat_platform"]
+albedo_color = Color(0.8, 0.4, 0, 1)
+emission_enabled = true
+emission = Color(0.8, 0.4, 0, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="CylinderMesh" id="mesh_key"]
+
+[sub_resource type="StandardMaterial3D" id="mat_key"]
+albedo_color = Color(0.9, 0.7, 0.2, 1)
+emission_enabled = true
+emission = Color(1, 0.8, 0, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="BoxMesh" id="mesh_lever"]
+size = Vector3(0.3, 1.2, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="mat_lever"]
+albedo_color = Color(0.8, 0.2, 0.2, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="BoxMesh" id="mesh_door"]
+size = Vector3(2, 3, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="mat_door"]
+albedo_color = Color(0, 0.8, 0.8, 1)
+emission_enabled = true
+emission = Color(0, 0.8, 0.8, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="BoxMesh" id="mesh_sign"]
+size = Vector3(2, 1.5, 0.1)
+
+[node name="Level4" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866, 0, -0.866, 0.5, 0, 12, 0)
+light_energy = 1.0
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("3")
+
+[node name="Room" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(20, 1, 20)
+material = SubResource("mat_floor")
+
+[node name="Ceiling" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
+use_collision = true
+size = Vector3(20, 1, 20)
+material = SubResource("mat_wall")
+
+[node name="WallNorth" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -10)
+use_collision = true
+size = Vector3(20, 9, 0.5)
+material = SubResource("mat_wall")
+
+[node name="WallSouth" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 10)
+use_collision = true
+size = Vector3(20, 9, 0.5)
+material = SubResource("mat_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 4, 0)
+use_collision = true
+size = Vector3(0.5, 9, 20)
+material = SubResource("mat_wall")
+
+[node name="WallWest" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 4, 0)
+use_collision = true
+size = Vector3(0.5, 9, 20)
+material = SubResource("mat_wall")
+
+[node name="Platforms" type="Node3D" parent="Room"]
+
+[node name="Platform1" type="CSGBox3D" parent="Room/Platforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -6)
+use_collision = true
+size = Vector3(3, 0.5, 3)
+material = SubResource("mat_platform")
+
+[node name="Platform2" type="CSGBox3D" parent="Room/Platforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -3)
+use_collision = true
+size = Vector3(3, 0.5, 3)
+material = SubResource("mat_platform")
+
+[node name="Platform3" type="CSGBox3D" parent="Room/Platforms"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 4, 0)
+use_collision = true
+size = Vector3(3, 0.5, 3)
+material = SubResource("mat_platform")
+
+[node name="Objects" type="Node3D" parent="."]
+
+[node name="HintSign" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 2, -9.5)
+collision_layer = 2
+script = ExtResource("4")
+hint_text = "🏃 NIVEL 4: PLATAFORMAS
+
+OBJETIVO:
+Salta por las plataformas naranjas
+para llegar a la LLAVE DORADA arriba.
+
+PISTAS:
+1️⃣ Salta a la plataforma baja (-6, -6)
+2️⃣ Salta a la plataforma media (centro)
+3️⃣ Salta a la plataforma alta (6, 0)
+4️⃣ Activa la PALANCA ROJA
+5️⃣ La plataforma móvil te llevará a la llave
+6️⃣ Lleva la llave a la PUERTA CYAN
+
+¡Cuidado al saltar!"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/HintSign"]
+mesh = SubResource("mesh_sign")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/HintSign"]
+shape = SubResource("2")
+
+[node name="TargetPosition" type="Node3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 6)
+
+[node name="MovingPlatform" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 5, 0)
+collision_layer = 1
+script = ExtResource("5")
+target_position_node = NodePath("../TargetPosition")
+move_speed = 3.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/MovingPlatform"]
+mesh = SubResource("mesh_platform")
+material_override = SubResource("mat_platform")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/MovingPlatform"]
+shape = SubResource("platform_shape")
+
+[node name="Lever" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 5, 0)
+collision_layer = 2
+script = ExtResource("2")
+item_name = "palanca"
+hint_text = "¡Palanca activada! La plataforma se mueve."
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Lever"]
+mesh = SubResource("mesh_lever")
+material_override = SubResource("mat_lever")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Lever"]
+shape = SubResource("2")
+
+[node name="Key" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 7, 6)
+collision_layer = 2
+script = ExtResource("2")
+item_name = "llave_plataforma"
+hint_text = "¡LLAVE conseguida! Vuelve abajo y ve a la puerta cyan."
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Key"]
+transform = Transform3D(0.3, 0, 0, 0, 0.8, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("mesh_key")
+material_override = SubResource("mat_key")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Key"]
+shape = SubResource("2")
+
+[node name="Door" type="StaticBody3D" parent="Objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.5, 9.7)
+collision_layer = 2
+script = ExtResource("3")
+is_locked = true
+required_item = "llave_plataforma"
+next_level = 5
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Door"]
+mesh = SubResource("mesh_door")
+material_override = SubResource("mat_door")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Objects/Door"]
+shape = SubResource("2")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("1")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/Camera3D"]
+target_position = Vector3(0, 0, -3)
+collision_mask = 2
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("6")]
+
+[node name="LevelLabel" type="Label" parent="UI"]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 500.0
+offset_bottom = 60.0
+theme_override_font_sizes/font_size = 24
+text = "NIVEL 4: PLATAFORMAS"
+
+[connection signal="interact" from="Objects/Lever" to="Objects/MovingPlatform" method="interact"]

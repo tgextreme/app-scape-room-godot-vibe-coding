@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcq4hxdp6wcli"]
+
+[ext_resource type="PackedScene" uid="uid://dngd2rkbpxp0o" path="res://scenes/Main.tscn" id="1_u5yvb"]
+
+[node name="Corridor" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 10, 0)
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
+text = "¡FELICIDADES!
+Has escapado del cuarto"
+font_size = 64
+
+[node name="RestartButton" type="Button" parent="."]
+offset_left = 400.0
+offset_top = 500.0
+offset_right = 600.0
+offset_bottom = 550.0
+text = "Reiniciar (Volver)"
+
+[node name="Player" parent="." instance=ExtResource("1_u5yvb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)

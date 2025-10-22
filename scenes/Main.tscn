@@ -1,0 +1,269 @@
+[gd_scene load_steps=24 format=3 uid="uid://dngd2rkbpxp0o"]
+
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_player"]
+[ext_resource type="Script" path="res://scripts/Pickup.gd" id="2_pickup"]
+[ext_resource type="Script" path="res://scripts/Vent.gd" id="3_vent"]
+[ext_resource type="Script" path="res://scripts/FuseBox.gd" id="4_fusebox"]
+[ext_resource type="Script" path="res://scripts/Note.gd" id="5_note"]
+[ext_resource type="Script" path="res://scripts/Keypad.gd" id="6_keypad"]
+[ext_resource type="Script" path="res://scripts/Door.gd" id="7_door"]
+[ext_resource type="PackedScene" uid="uid://cj7nbvqv6whxs" path="res://ui/KeypadPrompt.tscn" id="8_keypad_ui"]
+[ext_resource type="PackedScene" uid="uid://brhu4w2vkcqej" path="res://ui/HUD.tscn" id="9_hud"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.5
+height = 2.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1"]
+size = Vector3(1, 1, 1)
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.15, 0.2, 0.25, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
+albedo_color = Color(0.3, 0.25, 0.2, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ceiling"]
+albedo_color = Color(0.4, 0.4, 0.4, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wall"]
+albedo_color = Color(0.5, 0.6, 0.7, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_screwdriver"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_screwdriver"]
+albedo_color = Color(1, 0.5, 0, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_vent"]
+size = Vector3(1, 0.8, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vent"]
+albedo_color = Color(0.3, 0.3, 0.3, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fuse"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fuse"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_fusebox"]
+size = Vector3(0.8, 1, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fusebox"]
+albedo_color = Color(0.2, 0.8, 0.2, 1)
+emission_enabled = true
+emission = Color(0.2, 0.8, 0.2, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_note"]
+size = Vector3(0.6, 0.05, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_note"]
+albedo_color = Color(1, 1, 0.5, 1)
+emission_enabled = true
+emission = Color(1, 1, 0.5, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="BoxMesh" id="BoxMesh_keypad"]
+size = Vector3(0.5, 0.7, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_keypad"]
+albedo_color = Color(0, 0.5, 1, 1)
+emission_enabled = true
+emission = Color(0, 0.5, 1, 1)
+emission_energy_multiplier = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_door"]
+size = Vector3(2, 3, 0.2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_door"]
+albedo_color = Color(0.8, 0, 0.8, 1)
+emission_enabled = true
+emission = Color(0.8, 0, 0.8, 1)
+emission_energy_multiplier = 0.2
+
+[node name="Main" type="Node3D"]
+
+[node name="Environment" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 10, 0)
+light_energy = 0.8
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_1")
+
+[node name="Room" type="Node3D" parent="."]
+
+[node name="Floor" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_floor")
+
+[node name="Ceiling" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 0)
+use_collision = true
+size = Vector3(10, 1, 10)
+material = SubResource("StandardMaterial3D_ceiling")
+
+[node name="WallNorth" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -5)
+use_collision = true
+size = Vector3(10, 5, 0.5)
+material = SubResource("StandardMaterial3D_wall")
+
+[node name="WallSouth" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 5)
+use_collision = true
+size = Vector3(10, 5, 0.5)
+material = SubResource("StandardMaterial3D_wall")
+
+[node name="WallEast" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 0)
+use_collision = true
+size = Vector3(0.5, 5, 10)
+material = SubResource("StandardMaterial3D_wall")
+
+[node name="WallWest" type="CSGBox3D" parent="Room"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 2, 0)
+use_collision = true
+size = Vector3(0.5, 5, 10)
+material = SubResource("StandardMaterial3D_wall")
+
+[node name="Interactables" type="Node3D" parent="."]
+
+[node name="Screwdriver" type="StaticBody3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.5, -3)
+collision_layer = 2
+script = ExtResource("2_pickup")
+item_name = "destornillador"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/Screwdriver"]
+transform = Transform3D(0.3, 0, 0, 0, 0.8, 0, 0, 0, 0.1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_screwdriver")
+material_override = SubResource("StandardMaterial3D_screwdriver")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Screwdriver"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="Vent" type="StaticBody3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2, -4.8)
+collision_layer = 2
+script = ExtResource("3_vent")
+revealed_node = NodePath("../FuseItem")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/Vent"]
+mesh = SubResource("BoxMesh_vent")
+material_override = SubResource("StandardMaterial3D_vent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Vent"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="FuseItem" type="StaticBody3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1.5, -4.5)
+visible = false
+collision_layer = 2
+script = ExtResource("2_pickup")
+item_name = "fusible"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/FuseItem"]
+transform = Transform3D(0.2, 0, 0, 0, 0.6, 0, 0, 0, 0.2, 0, 0, 0)
+mesh = SubResource("CylinderMesh_fuse")
+material_override = SubResource("StandardMaterial3D_fuse")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/FuseItem"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="FuseBox" type="StaticBody3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 2, 0)
+collision_layer = 2
+script = ExtResource("4_fusebox")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/FuseBox"]
+mesh = SubResource("BoxMesh_fusebox")
+material_override = SubResource("StandardMaterial3D_fusebox")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/FuseBox"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="Note" type="StaticBody3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 3)
+collision_layer = 2
+script = ExtResource("5_note")
+note_text = "=== NOTA IMPORTANTE ===
+
+Cifrado César +2
+Código original: 2507
+
+Suma 2 a cada dígito:
+2+2=4, 5+2=7, 0+2=2, 7+2=9
+
+Código real: 4729"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/Note"]
+mesh = SubResource("BoxMesh_note")
+material_override = SubResource("StandardMaterial3D_note")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Note"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="Keypad" type="StaticBody3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 2, 2)
+collision_layer = 2
+script = ExtResource("6_keypad")
+keypad_prompt = NodePath("../../UI/KeypadPrompt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/Keypad"]
+mesh = SubResource("BoxMesh_keypad")
+material_override = SubResource("StandardMaterial3D_keypad")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Keypad"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="Door" type="StaticBody3D" parent="Interactables"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 4.8)
+collision_layer = 2
+script = ExtResource("7_door")
+next_scene = "res://scenes/Corridor.tscn"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Interactables/Door"]
+mesh = SubResource("BoxMesh_door")
+material_override = SubResource("StandardMaterial3D_door")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Interactables/Door"]
+shape = SubResource("BoxShape3D_1")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 1
+collision_mask = 1
+script = ExtResource("1_player")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/Camera3D"]
+enabled = true
+target_position = Vector3(0, 0, -3)
+collision_mask = 3
+collide_with_bodies = true
+
+[node name="UI" type="Node" parent="."]
+
+[node name="HUD" parent="UI" instance=ExtResource("9_hud")]
+
+[node name="KeypadPrompt" parent="UI" instance=ExtResource("8_keypad_ui")]
