@@ -1,4 +1,4 @@
-extends StaticBody3D
+extends Node
 
 @export var required_buttons: int = 3
 @export var door_to_open: NodePath

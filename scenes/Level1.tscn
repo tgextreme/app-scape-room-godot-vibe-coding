@@ -137,7 +137,7 @@ collision_layer = 2
 script = ExtResource("3")
 is_locked = true
 required_item = "llave_dorada"
-next_level = 2
+next_level = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Door"]
 mesh = SubResource("mesh_door")

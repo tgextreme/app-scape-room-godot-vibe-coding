@@ -1,6 +1,9 @@
 extends Control
 
 func _ready():
+	# Liberar el cursor del ratón
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	
 	LevelManager.load_progress()
 	update_level_buttons()
 	

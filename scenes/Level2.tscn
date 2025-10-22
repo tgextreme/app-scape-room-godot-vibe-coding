@@ -201,7 +201,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 6.7)
 collision_layer = 2
 script = ExtResource("3")
 is_locked = false
-next_level = 3
+next_level = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Door"]
 mesh = SubResource("mesh_door")

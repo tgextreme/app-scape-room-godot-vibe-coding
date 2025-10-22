@@ -25,11 +25,22 @@ func unlock():
 		mat.emission = Color(0, 1, 0, 1)
 	GameState.say("¡Puerta desbloqueada!")
 
+var _door_opened: bool = false
+
 func open_door():
+	# Evitar múltiples llamadas
+	if _door_opened:
+		return
+	_door_opened = true
+	
 	GameState.say("¡Nivel completado!")
+	print("=== SIMPLE DOOR - open_door() llamado ===")
+	print("next_level = " + str(next_level))
 	await get_tree().create_timer(1.0).timeout
 	
 	if next_level > 0:
+		print("Llamando go_to_level(" + str(next_level) + ")")
 		LevelManager.go_to_level(next_level)
 	else:
+		print("Llamando complete_level()")
 		LevelManager.complete_level()

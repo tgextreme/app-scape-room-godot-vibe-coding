@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://level4_platforms"]
+[gd_scene load_steps=23 format=3 uid="uid://level4_platforms"]
 
 [ext_resource type="Script" path="res://scripts/Player.gd" id="1"]
 [ext_resource type="Script" path="res://scripts/SimplePickup.gd" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/HintSign.gd" id="4"]
 [ext_resource type="Script" path="res://scripts/MovingPlatform.gd" id="5"]
 [ext_resource type="PackedScene" uid="uid://brhu4w2vkcqej" path="res://ui/HUD.tscn" id="6"]
+[ext_resource type="Script" path="res://scripts/Lever.gd" id="7"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 radius = 0.5
@@ -168,7 +169,7 @@ shape = SubResource("2")
 [node name="TargetPosition" type="Node3D" parent="Objects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 6, 6)
 
-[node name="MovingPlatform" type="StaticBody3D" parent="Objects"]
+[node name="MovingPlatform" type="AnimatableBody3D" parent="Objects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 5, 0)
 collision_layer = 1
 script = ExtResource("5")
@@ -185,8 +186,8 @@ shape = SubResource("platform_shape")
 [node name="Lever" type="StaticBody3D" parent="Objects"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 5, 0)
 collision_layer = 2
-script = ExtResource("2")
-item_name = "palanca"
+script = ExtResource("7")
+target_node = NodePath("../MovingPlatform")
 hint_text = "¡Palanca activada! La plataforma se mueve."
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Lever"]
@@ -217,7 +218,7 @@ collision_layer = 2
 script = ExtResource("3")
 is_locked = true
 required_item = "llave_plataforma"
-next_level = 5
+next_level = 0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Objects/Door"]
 mesh = SubResource("mesh_door")
@@ -254,5 +255,3 @@ offset_right = 500.0
 offset_bottom = 60.0
 theme_override_font_sizes/font_size = 24
 text = "NIVEL 4: PLATAFORMAS"
-
-[connection signal="interact" from="Objects/Lever" to="Objects/MovingPlatform" method="interact"]

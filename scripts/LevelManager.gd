@@ -13,16 +13,25 @@ func _ready():
 
 func complete_level():
 	# Al completar un nivel, desbloquear el siguiente
+	var completed = current_level
+	print("=== COMPLETE LEVEL CALLED ===")
+	print("Antes - current_level: " + str(current_level) + ", max_unlocked_level: " + str(max_unlocked_level))
+	
 	if current_level < max_level:
+		# Siempre desbloquear el siguiente nivel
+		if current_level >= max_unlocked_level:
+			max_unlocked_level = current_level + 1
+			print("Desbloqueando nivel: " + str(max_unlocked_level))
 		current_level += 1
-		if current_level > max_unlocked_level:
-			max_unlocked_level = current_level
-			save_progress()
-			GameState.say("¡Nivel " + str(current_level) + " desbloqueado!")
-		get_tree().change_scene_to_file("res://scenes/Level" + str(current_level) + ".tscn")
+		save_progress()
+		print("Nivel completado: " + str(completed) + ", Próximo nivel: " + str(current_level) + ", Max desbloqueado: " + str(max_unlocked_level))
 	else:
 		# Completado todos los niveles
-		get_tree().change_scene_to_file("res://scenes/Victory.tscn")
+		save_progress()
+		print("¡Todos los niveles completados!")
+	
+	# Volver al menú principal para que el jugador vea el progreso
+	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
 
 func restart_level():
 	get_tree().reload_current_scene()
